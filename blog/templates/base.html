@@ -1,0 +1,79 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="fr-fr" dir="ltr">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{% block title %}{% endblock %} | Nathan@Manipal</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon.png">
+	<link rel="stylesheet" href="{% static "blog/css/uikit.min.css" %}">
+	<link rel="stylesheet" href="{% static "blog/css/main.css" %}">
+	<link rel="stylesheet" href="{% static "blog/css/components/slideshow.min.css" %}">
+	<link rel="stylesheet" href="{% static "blog/css/components/slidenav.min.css" %}">
+</head>
+
+<body>
+
+	<div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom">
+
+		<nav class="uk-navbar uk-margin-large-bottom">
+			<ul class="uk-navbar-nav uk-hidden-small">
+				{% block navbar %}
+				<li {% if request.path = "/" %}class="uk-active"{% endif %}>
+					<a href="/">Accueil</a>
+				</li>
+				<li {% if request.path = "/article/" %}class="uk-active"{% endif %}>
+					<a href="/articles/">Articles</a>
+				</li>
+				<li {% if request.path = "/album/" %}class="uk-active"{% endif %}>
+					<a href="/albums/">Albums photos</a>
+				</li>
+				{% endblock %}
+			</ul>
+		</nav>
+
+		<ul class="uk-breadcrumb">
+			{% block breadcrumb %}
+			{% endblock %}
+		</ul>
+
+		<div class="uk-grid" data-uk-grid-margin>
+		{% block body %}
+			<div class="uk-width-medium-3-4">
+
+
+				<article class="uk-article">
+
+				</article>
+
+
+			</div>
+			{% endblock %}
+
+			{% block left_menu %}
+			<div class="uk-width-medium-1-4">
+				<div class="uk-panel uk-panel-box uk-text-center">
+					<img class="uk-border-rounded" width="120" height="120" src="{% static "blog/img/nathan.jpg" %}" alt="">
+					<h3>Nathan Bigaignon</h3>
+					<p>&#201;tudiant en 4ème à Epitech. Actuellement en séjour d'étude à l'université de Manipal en Inde.</p>
+				</div>
+				<div class="uk-panel">
+					<h3 class="uk-panel-title">Social</h3>
+					<ul class="uk-list">
+						<li><a href="https://github.com/epi-log">GitHub</a></li>
+						<li><a href="https://www.linkedin.com/pub/nathan-bigaignon/6a/525/743?trk=seokp_posts_secondary_cluster_res_author_photo">Linkedin</a></li>
+						<li><a href="https://www.facebook.com/nathan.bigaignon.9">Facebook</a></li>
+					</ul>
+				</div>
+			</div>
+			{% endblock %}
+		</div>
+
+	</div>
+	<script src="{% static "blog/js/jquery-1.11.3.min.js" %}"></script>
+	<script src="{% static "blog/js/uikit.min.js" %}"></script>
+	<script src="{% static "blog/js/components/slideshow.min.js" %}"></script>
+</body>
+</html>
