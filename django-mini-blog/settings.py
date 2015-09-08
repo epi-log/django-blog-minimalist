@@ -20,12 +20,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'k^x(nrvi8o7l$ab_cd)7ns9%#!m5a3dw$%)%^55c=5p7wuk=9m'
+SECRET_KEY = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+'.nathanbigaignon.net',
+'.nathanbigaignon.net.',
+]
 
 
 # Application definition
@@ -38,7 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
-    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,10 +52,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
-ROOT_URLCONF = 'django_blog_minimalist.urls'
+ROOT_URLCONF = 'django-mini-blog.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'django_blog_minimalist.wsgi.application'
+WSGI_APPLICATION = 'django-mini-blog.wsgi.application'
 
 
 # Database
@@ -99,18 +100,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-# For development purpose only
-DEBUG_TOOLBAR = False
-
-if DEBUG_TOOLBAR == True:
-    def show_toolbar(request):
-        return True
-    DEBUG_TOOLBAR_CONFIG = {
-        'SHOW_TOOLBAR_CALLBACK': 'django_blog_minimalist.settings.show_toolbar',
-    }
-
-
-# Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
@@ -118,3 +107,5 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
