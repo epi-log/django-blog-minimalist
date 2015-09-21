@@ -15,20 +15,20 @@
 
 			<p class="uk-article-meta">Rédigé par {{ Article.author }} le {{ Article.dateCreated }}.</p>
 
-			<p>{{ Article.content }}</p>
+			<p>{{ Article.content|safe }}</p>
 
 			{% endfor %}
 			{% if is_paginated %}
 			<div class="uk-width-medium-3-4">
 				<ul class="uk-pagination">
 					{% if page_obj.has_previous %}
-					<li><a href="/article/?page={{ page_obj.previous_page_number }}"><i class="uk-icon-angle-double-left"></i></a></li>
+					<li><a href="?page={{ page_obj.previous_page_number }}"><i class="uk-icon-angle-double-left"></i></a></li>
 					{% else %}
 					<li class="uk-disabled"><span><i class="uk-icon-angle-double-left"></i></span></li>
 					{% endif %}
 					<li class="uk-active"><span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
 					{% if page_obj.has_next %}
-					<li><a href="/article/?page={{ page_obj.next_page_number }}"><i class="uk-icon-angle-double-right"></i></a></li>
+					<li><a href="?page={{ page_obj.next_page_number }}"><i class="uk-icon-angle-double-right"></i></a></li>
 					{% else %}
 					<li class="uk-disabled"><span><i class="uk-icon-angle-double-right"></i></span></li>
 					{% endif %}

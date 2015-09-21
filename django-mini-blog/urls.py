@@ -16,13 +16,10 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from blog.views import ArticleList, AlbumList, HomeView, PhotoList
+from blog.views import ArticleList
 from django.conf.urls.static import static
 
 urlpatterns = [
-	url(r'^$', HomeView.as_view()),
     url(r'^admin', include(admin.site.urls)),
-    url(r'^articles', ArticleList.as_view()),
-    url(r'^albums', AlbumList.as_view()),
-    url(r'^album/(?P<id>[0-9]+)/$', PhotoList.as_view()),
+    url(r'^$', ArticleList.as_view()),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

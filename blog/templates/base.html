@@ -24,20 +24,9 @@
 				<li {% if request.path = "/" %}class="uk-active"{% endif %}>
 					<a href="/">Accueil</a>
 				</li>
-				<li {% if request.path = "/article/" %}class="uk-active"{% endif %}>
-					<a href="/articles/">Articles</a>
-				</li>
-				<li {% if request.path = "/album/" %}class="uk-active"{% endif %}>
-					<a href="/albums/">Albums photos</a>
-				</li>
 				{% endblock %}
 			</ul>
 		</nav>
-
-		<ul class="uk-breadcrumb">
-			{% block breadcrumb %}
-			{% endblock %}
-		</ul>
 
 		<div class="uk-grid" data-uk-grid-margin>
 		{% block body %}
