@@ -10,7 +10,7 @@
 		<article class="uk-article">
 			{% for Article in object_list %}
 			<h1 class="uk-article-title">
-				<a href="layouts_post.html">{{ Article.title }}</a>
+				{{ Article.title }}
 			</h1>
 
 			<p class="uk-article-meta">Rédigé par {{ Article.author.first_name }} {{ Article.author.last_name }} le {{ Article.dateCreated }}.</p>
