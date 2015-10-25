@@ -15,6 +15,7 @@ class Article(models.Model):
     content = RichTextField()
     dateCreated = models.DateTimeField(auto_now_add=True)
     dateUpdated = models.DateTimeField(auto_now=True)
+    album = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ['-dateCreated']
@@ -22,10 +23,12 @@ class Article(models.Model):
 
 class Comment(models.Model):
     def __str__(self):
-        return self.author + ' ' + str(formats.date_format(self.dateCreated, "SHORT_DATETIME_FORMAT"))
+        return self.firstname + ' ' + self.lastname + ' ' + str(
+            formats.date_format(self.dateCreated, "SHORT_DATETIME_FORMAT"))
 
-    author = models.CharField(max_length=100)
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
     content = models.TextField()
     dateCreated = models.DateTimeField(auto_now_add=True)
     dateUpdated = models.DateTimeField(auto_now=True)
-    article = models.ForeignKey(Article)
+    id_article = models.ForeignKey(Article)

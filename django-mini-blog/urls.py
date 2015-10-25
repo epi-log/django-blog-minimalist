@@ -16,9 +16,11 @@ Including another URLconf
 
 from django.conf.urls import include, url
 from django.contrib import admin
+from blog import views
 from blog.views import ArticleList
 
 urlpatterns = [
     url(r'^admin', include(admin.site.urls)),
     url(r'^$', ArticleList.as_view()),
+    url(r'^post-comment', views.post_comment, name="post-comment")
 ]
