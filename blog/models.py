@@ -14,4 +14,13 @@ class Article(models.Model):
     content = RichTextField()
     dateCreated = models.DateTimeField(auto_now_add=True)
     dateUpdated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField()
+
+
+class Comment(models.Model):
+    def __str__(self):
+        return self.title
+
+    author = models.CharField(max_length=100)
+    content = models.TextField()
+    dateCreated = models.DateTimeField(auto_now_add=True)
+    dateUpdated = models.DateTimeField(auto_now=True)
