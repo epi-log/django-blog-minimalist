@@ -17,23 +17,27 @@
                     le {{ Article.dateCreated }}.</p>
 
                 <p>{{ Article.content|safe }}</p>
-                <button data-uk-toggle="{target: '#_{{ Article.id }}'}" class="uk-button uk-button-small uk-button-primary">Voir
-                    commentaires
-                </button>
-                <ul class="uk-comment-list">
-                <!-- comment loop -->
-                <li class="uk-comment">
-                <article id="_{{ Article.id }}" class="uk-hidden uk-margin-top uk-comment">
-                    <div class="uk-comment-header">
-                        <h4 class="uk-comment-title">Nathan Bigaignon</h4>
-                        <p class="uk-comment-meta">Posté 13/09/2015</p>
-                    </div>
-                    <div class="uk-comment-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi cum doloribus earum error
-                        est impedit iste nobis non obcaecati officia omnis perferendis possimus quia quidem, rem tempore
-                        velit vero voluptate.</div>
-                </article>
-                </li>
-                </ul>
+                {% if Article.comment_set.count != 0 %}
+                    <button data-uk-toggle="{target: '#_{{ Article.id }}'}"
+                            class="uk-button uk-button-small uk-button-primary"><span
+                            class="uk-icon-comments uk-icon-mini"> Afficher les commentaires</span>
+                    </button>
+                    <ul class="uk-comment-list uk-hidden" id="_{{ Article.id }}">
+                        {% for comment in Article.comment_set.all %}
+                            <li class="uk-comment">
+                                <article class="uk-margin-top uk-comment">
+                                    <div class="uk-comment-header">
+                                        <h4 class="uk-comment-title">{{ comment.author }}</h4>
+
+                                        <p class="uk-comment-meta">{{ comment.dateCreated }}</p>
+                                    </div>
+                                    <div class="uk-comment-body">{{ comment.content }}
+                                    </div>
+                                </article>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             {% endfor %}
             {% if is_paginated %}
                 <div class="uk-width-medium-3-4">
