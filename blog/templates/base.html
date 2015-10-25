@@ -8,7 +8,7 @@
 	<title>{% block title %}{% endblock %} | Nathan@Manipal</title>
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon.png">
-	<link rel="stylesheet" href="{% static "blog/css/uikit.min.css" %}">
+	<link rel="stylesheet" href="{% static "blog/css/uikit.almost-flat.min.css" %}">
 	<link rel="stylesheet" href="{% static "blog/css/main.css" %}">
 	<link rel="stylesheet" href="{% static "blog/css/components/slideshow.min.css" %}">
 	<link rel="stylesheet" href="{% static "blog/css/components/slidenav.min.css" %}">
@@ -24,7 +24,7 @@
 				<li {% if request.path = "/" %}class="uk-active"{% endif %}>
 					<a href="/">Accueil</a>
 				</li>
-				{% endblock %}
+				{% endblock navbar %}
 			</ul>
 		</nav>
 
@@ -39,7 +39,7 @@
 
 
 			</div>
-			{% endblock %}
+			{% endblock body %}
 
 			{% block left_menu %}
 			<div class="uk-width-medium-1-4">
@@ -57,12 +57,12 @@
 					</ul>
 				</div>
 			</div>
-			{% endblock %}
+			{% endblock left_menu %}
 		</div>
 
 	</div>
-	<script src="{% static "blog/js/jquery-1.11.3.min.js" %}"></script>
+	<script src="{% static "blog/js/jquery-2.1.4.min.js" %}"></script>
 	<script src="{% static "blog/js/uikit.min.js" %}"></script>
-	<script src="{% static "blog/js/components/slideshow.min.js" %}"></script>
+{% block extrahead %}{% endblock extrahead %}
 </body>
 </html>
