@@ -32,3 +32,13 @@ class Comment(models.Model):
     dateCreated = models.DateTimeField(auto_now_add=True)
     dateUpdated = models.DateTimeField(auto_now=True)
     id_article = models.ForeignKey(Article)
+
+
+class Image(models.Model):
+    def __str__(self):
+        return self.title
+    title = models.CharField(max_length=100)
+    path = models.ImageField()
+    dateCreated = models.DateTimeField(auto_now_add=True)
+    dateUpdated = models.DateTimeField(auto_now=True)
+    id_article = models.ForeignKey(Article)

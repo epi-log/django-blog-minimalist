@@ -24,9 +24,9 @@ def post_comment(request):
             return HttpResponseRedirect('/')
         else:
             messages.add_message(request, messages.ERROR,
-                                 "Une erreur est survenue. Veuilliez réessayer plus tard ou contacter l'administrateur du site.")
+                                 "Une erreur est survenue. Veuilliez réessayer plus tard ou contacter l'administrateur du site.", extra_tags='danger')
         return HttpResponseRedirect('/')
     else:
         messages.add_message(request, messages.ERROR,
-                             "Une erreur est survenue. Veuilliez réessayer plus tard ou contacter l'administrateur du site.")
+                             "Une erreur est survenue. Veuilliez réessayer plus tard ou contacter l'administrateur du site.", extra_tags='danger')
         return HttpResponseRedirect('/')

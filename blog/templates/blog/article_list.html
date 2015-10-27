@@ -5,9 +5,13 @@
     <li><a href="/">Accueil</a></li>
     <li class="uk-active"><span>Articles</span></li>
 {% endblock %}
-
+{% block extracss %}
+    <link rel="stylesheet" href="{% static "blog/css/components/slider.almost-flat.min.css" %}">
+    <link rel="stylesheet" href="{% static "blog/css/components/slidenav.almost-flat.min.css" %}">
+    <link rel="stylesheet" href="{% static "blog/css/article_list.css" %}">
+{% endblock extracss %}
 {% block body %}
-    <div class="uk-width-medium-3-4">
+    <div class="">
         {% if messages %}
             <ul class="uk-list">
                 {% for message in messages %}
@@ -27,6 +31,35 @@
                     le {{ Article.dateCreated }}.</p>
 
                 <p>{{ Article.content|safe }}</p>
+                {% if Article.image_set.count != 0 %}
+                    <div class="uk-panel-box uk-margin-bottom">
+                        {% if Article.image_set.count > 2 %}
+                            <div class="uk-slidenav-position"
+                                 data-uk-slider{% if Article.image_set.count <= 2 %}="{center:true, infinite:false}"{% endif %}>
+
+                                <div class="uk-slider-container">
+                                    <ul class="uk-slider uk-grid-medium-1-4">
+                                        {% for image in Article.image_set.all %}
+                                            <li><img src="media/{{ image.path }}" height="250" width="250" alt=""></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <a href="" class="uk-slidenav uk-slidenav-contrast uk-slidenav-previous"
+                                   data-uk-slider-item="previous"></a>
+                                <a href="" class="uk-slidenav uk-slidenav-contrast uk-slidenav-next"
+                                   data-uk-slider-item="next"></a>
+                            </div>
+                        {% else %}
+                            <div class="uk-grid">
+                                {% for image in Article.image_set.all %}
+                                    <div class="uk-width-1-2">
+                                        <a href="media/{{ image.path }}" data-uk-lightbox="{group:'_group_{{ Article.id }}'}" title="{{ image.title }}"><img src="media/{{ image.path }}" alt=""></a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
                 <button
                         class="uk-button uk-button-small uk-button-primary"
                         data-uk-modal="{target:'#_article_{{ Article.id }}'}"><span
@@ -46,16 +79,19 @@
                                 <div class="uk-form-row">
                                     <label for="_firstname" class="uk-form-label">Prénom</label>
                                     <input id="_firstname" name="_firstname" class="uk-form-width-large" type="text"
+                                           required
                                            placeholder="">
                                 </div>
                                 <div class="uk-form-row">
                                     <label for="_lastname" class="uk-form-label">Nom</label>
                                     <input id="_lastname" name="_lastname" class="uk-form-width-large" type="text"
+                                           required
                                            placeholder="">
                                 </div>
                                 <div class="uk-form-row">
                                     <label for="_content" class="uk-form-label">Contenu</label>
                                     <textarea id="_content" name="_content" class="uk-form-width-large uk-form-large"
+                                              required
                                               rows="5"></textarea>
                                 </div>
                             </fieldset>
@@ -69,6 +105,7 @@
                         </form>
                     </div>
                 </div>
+
                 {% if Article.comment_set.count != 0 %}
                     <button data-uk-toggle="{target: '#_comment_{{ Article.id }}'}"
                             class="uk-button uk-button-small"><span
@@ -90,9 +127,11 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+
             {% endfor %}
+
             {% if is_paginated %}
-                <div class="uk-width-medium-3-4">
+                <div class="">
                     <ul class="uk-pagination uk-margin-top">
                         {% if page_obj.has_previous %}
                             <li><a href="?page={{ page_obj.previous_page_number }}"><i
@@ -113,4 +152,8 @@
             {% endif %}
         </article>
     </div>
+    {% block extrajs %}
+        <script src="{% static "blog/js/components/lightbox.min.js" %}"></script>
+        <script src="{% static "blog/js/components/slider.min.js" %}"></script>
+    {% endblock extrajs %}
 {% endblock %}
