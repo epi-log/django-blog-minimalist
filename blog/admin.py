@@ -1,8 +1,7 @@
 from django.contrib import admin
-from blog.models import Article
+from blog.models import Article, Comment, Image
 # Register your models here.
 
-class AlbumAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("title",)}
-
 admin.site.register(Article)
+admin.site.register(Comment)
+admin.site.register(Image)

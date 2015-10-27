@@ -2,39 +2,158 @@
 {% load staticfiles %}
 {% block title %}Articles{% endblock %}
 {% block breadcrumb %}
-<li><a href="/">Accueil</a></li>
-<li class="uk-active"><span>Articles</span></li>
+    <li><a href="/">Accueil</a></li>
+    <li class="uk-active"><span>Articles</span></li>
 {% endblock %}
+{% block extracss %}
+    <link rel="stylesheet" href="{% static "blog/css/components/slider.almost-flat.min.css" %}">
+    <link rel="stylesheet" href="{% static "blog/css/components/slidenav.almost-flat.min.css" %}">
+    <link rel="stylesheet" href="{% static "blog/css/article_list.css" %}">
+{% endblock extracss %}
 {% block body %}
-	<div class="uk-width-medium-3-4">
-		<article class="uk-article">
-			{% for Article in object_list %}
-			<h1 class="uk-article-title">
-				<a href="layouts_post.html">{{ Article.title }}</a>
-			</h1>
+    <div class="">
+        {% if messages %}
+            <ul class="uk-list">
+                {% for message in messages %}
+                    <li>
+                        <div class="uk-alert uk-alert-{{ message.tags }}">{{ message }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <article class="uk-article">
+            {% for Article in object_list %}
+                <h1 class="uk-article-title">
+                    {{ Article.title }}
+                </h1>
 
-			<p class="uk-article-meta">Rédigé par {{ Article.author.first_name }} {{ Article.author.last_name }} le {{ Article.dateCreated }}.</p>
+                <p class="uk-article-meta">Rédigé par {{ Article.author.first_name }} {{ Article.author.last_name }}
+                    le {{ Article.dateCreated }}.</p>
 
-			<p>{{ Article.content|safe }}</p>
+                <p>{{ Article.content|safe }}</p>
+                {% if Article.image_set.count != 0 %}
+                    <div class="uk-panel-box uk-margin-bottom">
+                        {% if Article.image_set.count > 2 %}
+                            <div class="uk-slidenav-position"
+                                 data-uk-slider{% if Article.image_set.count <= 2 %}="{center:true, infinite:false}"{% endif %}>
 
-			{% endfor %}
-			{% if is_paginated %}
-			<div class="uk-width-medium-3-4">
-				<ul class="uk-pagination">
-					{% if page_obj.has_previous %}
-					<li><a href="?page={{ page_obj.previous_page_number }}"><i class="uk-icon-angle-double-left"></i></a></li>
-					{% else %}
-					<li class="uk-disabled"><span><i class="uk-icon-angle-double-left"></i></span></li>
-					{% endif %}
-					<li class="uk-active"><span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
-					{% if page_obj.has_next %}
-					<li><a href="?page={{ page_obj.next_page_number }}"><i class="uk-icon-angle-double-right"></i></a></li>
-					{% else %}
-					<li class="uk-disabled"><span><i class="uk-icon-angle-double-right"></i></span></li>
-					{% endif %}
-				</ul>
-			</div>
-			{% endif %}
-		</article>
-	</div>
+                                <div class="uk-slider-container">
+                                    <ul class="uk-slider uk-grid-medium-1-4">
+                                        {% for image in Article.image_set.all %}
+                                            <li><img src="media/{{ image.path }}" height="250" width="250" alt=""></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <a href="" class="uk-slidenav uk-slidenav-contrast uk-slidenav-previous"
+                                   data-uk-slider-item="previous"></a>
+                                <a href="" class="uk-slidenav uk-slidenav-contrast uk-slidenav-next"
+                                   data-uk-slider-item="next"></a>
+                            </div>
+                        {% else %}
+                            <div class="uk-grid">
+                                {% for image in Article.image_set.all %}
+                                    <div class="uk-width-1-2">
+                                        <a href="media/{{ image.path }}" data-uk-lightbox="{group:'_group_{{ Article.id }}'}" title="{{ image.title }}"><img src="media/{{ image.path }}" alt=""></a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <button
+                        class="uk-button uk-button-small uk-button-primary"
+                        data-uk-modal="{target:'#_article_{{ Article.id }}'}"><span
+                        class="uk-icon-plus uk-icon-mini"> Commenter cet article</span>
+                </button>
+                {% if Article.album != "" %}
+                    <a href="{{ Article.album }}"
+                       class="uk-button uk-button-small">
+                        <span class="uk-icon-camera uk-icon-mini"> Voir les photos</span>
+                    </a>
+                {% endif %}
+                <div id="_article_{{ Article.id }}" class="uk-modal">
+                    <div class="uk-modal-dialog">
+                        <div class="uk-modal-header">Poster un commentaire</div>
+                        <form class="uk-form uk-form-stacked" method="post" action="/post-comment/">
+                            <fieldset>
+                                <div class="uk-form-row">
+                                    <label for="_firstname" class="uk-form-label">Prénom</label>
+                                    <input id="_firstname" name="_firstname" class="uk-form-width-large" type="text"
+                                           required
+                                           placeholder="">
+                                </div>
+                                <div class="uk-form-row">
+                                    <label for="_lastname" class="uk-form-label">Nom</label>
+                                    <input id="_lastname" name="_lastname" class="uk-form-width-large" type="text"
+                                           required
+                                           placeholder="">
+                                </div>
+                                <div class="uk-form-row">
+                                    <label for="_content" class="uk-form-label">Contenu</label>
+                                    <textarea id="_content" name="_content" class="uk-form-width-large uk-form-large"
+                                              required
+                                              rows="5"></textarea>
+                                </div>
+                            </fieldset>
+                            <div class="uk-modal-footer">
+                                <button class="uk-button-small uk-button uk-button-primary" type="submit">Poster
+                                </button>
+                                <button class="uk-button-small uk-button uk-modal-close">Annuler</button>
+                            </div>
+                            <input type="hidden" name="_id_article" value="{{ Article.id }}">
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+
+                {% if Article.comment_set.count != 0 %}
+                    <button data-uk-toggle="{target: '#_comment_{{ Article.id }}'}"
+                            class="uk-button uk-button-small"><span
+                            class="uk-icon-comments uk-icon-mini">&nbsp;Afficher les commentaires</span>
+                    </button>
+                    <ul class="uk-comment-list uk-hidden" id="_comment_{{ Article.id }}">
+                        {% for comment in Article.comment_set.all %}
+                            <li class="uk-comment">
+                                <article class="uk-comment">
+                                    <div class="uk-comment-header">
+                                        <h4 class="uk-comment-title">{{ comment.firstname }} {{ comment.lastname }}</h4>
+
+                                        <p class="uk-comment-meta">{{ comment.dateCreated }}</p>
+                                    </div>
+                                    <div class="uk-comment-body">{{ comment.content }}
+                                    </div>
+                                </article>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+            {% endfor %}
+
+            {% if is_paginated %}
+                <div class="">
+                    <ul class="uk-pagination uk-margin-top">
+                        {% if page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}"><i
+                                    class="uk-icon-angle-double-left"></i></a></li>
+                        {% else %}
+                            <li class="uk-disabled"><span><i class="uk-icon-angle-double-left"></i></span></li>
+                        {% endif %}
+                        <li class="uk-active"><span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                        {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}"><i
+                                    class="uk-icon-angle-double-right"></i></a></li>
+                        {% else %}
+                            <li class="uk-disabled"><span><i class="uk-icon-angle-double-right"></i></span></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+        </article>
+    </div>
+    {% block extrajs %}
+        <script src="{% static "blog/js/components/lightbox.min.js" %}"></script>
+        <script src="{% static "blog/js/components/slider.min.js" %}"></script>
+    {% endblock extrajs %}
 {% endblock %}
